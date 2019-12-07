@@ -11,17 +11,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.jmusixmatch.MusixMatch;
 import org.jmusixmatch.entity.track.Track;
+import org.jmusixmatch.entity.track.TrackData;
 
-public class Album extends AppCompatActivity {
+public class Lyrics extends AppCompatActivity {
 
     public static Track track;
-    private String theAlbumName;
+    private String theLyrics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // basic initial onCreate stuff (api key, internet, etc.)
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.album);
+        setContentView(R.layout.lyrics);
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy =
@@ -29,18 +30,17 @@ public class Album extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        // clicking submitAlbum button will move you to new screen with resulting album
-        Button submitAlbum = findViewById(R.id.submitLyrics);
-        submitAlbum.setOnClickListener(new View.OnClickListener() {
+        // clicking submitLyrics button will move you to new screen with resulting lyrics
+        Button submitLyrics = findViewById(R.id.submitLyrics);
+        submitLyrics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openAlbumOutput();
+                openLyricsOutput();
             }
         });
     }
 
-    // helper function when clicking "Submit" button
-    public void openAlbumOutput() {
+    public void openLyricsOutput() {
         String apiKey = "3c39a8eee4ffc276f2553676ec83aeea";
         MusixMatch musixMatch = new MusixMatch(apiKey);
         EditText editArtist = findViewById(R.id.editArtist);
@@ -48,23 +48,25 @@ public class Album extends AppCompatActivity {
         String artist = editArtist.getText().toString();
         String song = editSong.getText().toString();
 
-        // function to obtain album name
+        // function to obtain lyrics
         try {
             if (song.length() == 0) {
-                theAlbumName = "Invalid Song Name";
+                theLyrics = "Invalid Song Name";
             } else if (artist.length() == 0) {
-                theAlbumName = "Invalid Artist Name";
+                theLyrics = "Invalid Artist Name";
             } else {
                 track = musixMatch.getMatchingTrack(song, artist);
-                theAlbumName = track.getTrack().getAlbumName();
-                System.out.println(theAlbumName);
+                TrackData data = track.getTrack();
+                int trackID = data.getTrackId();
+                theLyrics = musixMatch.getLyrics(trackID).getLyricsBody();
+                System.out.println(theLyrics);
             }
         } catch (Exception e) {
             System.out.println("Incorrect Data");
         }
 
-        Intent i = new Intent(this, AlbumOutput.class);
-        i.putExtra("theAlbumName", "Album Name: " + theAlbumName);
+        Intent i = new Intent(this, LyricsOutput.class);
+        i.putExtra("theLyrics", theLyrics);
         startActivity(i);
     }
 }

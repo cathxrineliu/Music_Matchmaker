@@ -5,15 +5,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AlbumOutput extends AppCompatActivity {
+public class LyricsOutput extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.output_album);
+        setContentView(R.layout.output_lyrics);
 
-        String albumName = getIntent().getStringExtra("theAlbumName");
+        String lyrics = getIntent().getStringExtra("theLyrics");
         TextView albumNameOutput = findViewById(R.id.lyricsOutput);
-        albumNameOutput.setText(albumName);
+        albumNameOutput.setText(lyrics);
     }
 }
