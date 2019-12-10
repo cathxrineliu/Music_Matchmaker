@@ -60,7 +60,8 @@ public class Album extends AppCompatActivity {
                 System.out.println(theAlbumName);
             }
         } catch (Exception e) {
-            System.out.println("Incorrect Data");
+            theAlbumName = "Incorrect Data";
+            System.out.println(theAlbumName);
         }
 
         Intent i = new Intent(this, AlbumOutput.class);

@@ -62,6 +62,7 @@ public class Lyrics extends AppCompatActivity {
                 System.out.println(theLyrics);
             }
         } catch (Exception e) {
+            theLyrics = "Incorrect Data";
             System.out.println("Incorrect Data");
         }
 
